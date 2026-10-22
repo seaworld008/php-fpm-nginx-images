@@ -5,7 +5,7 @@
 ARG BASE=114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
 ARG PHPV=7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4
 
-# phpredis 5.3.7: ThinkPHP 5.0 的 Redis 缓存/Session 驱动调用 Redis::delete(), phpredis 6.x 已删除该方法
+# phpredis 5.3.7: 与原 bitnami-full 镜像 (5.3.5) 保持同一主版本; Redis::delete() 在 5.x/6.x 中都存在且已 deprecated, 见 docs/12 §12.9
 FROM ${BASE} AS redis5
 ARG PHPV
 RUN set -eux; apt-get update; \

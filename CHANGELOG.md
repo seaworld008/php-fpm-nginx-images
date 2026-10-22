@@ -1,12 +1,23 @@
 # Changelog
 
+## 2026-10-23 — 复查、只读入侵排查与勘误
+
+- [docs/12](docs/12-生产升级实施经验-20261022.md) 新增 12.6～12.10：
+  - 复查发现的 6 个遗漏及处理方法：ini 和池配置未迁移、cron 调用的脚本里写死旧路径、宿主机自带的 php8.3、手工编译的扩展、CI 业务镜像仍用旧基础镜像、遗留的后台脚本。
+  - FPM 运行态探针。
+  - 只读入侵排查清单与结论（六台主机未发现入侵迹象，并写明局限）。
+  - 勘误与后续事项。
+- 勘误：`Redis::delete()` 在 phpredis 5.x 和 6.x 中都存在，都已 deprecated。ThinkPHP 5.0.24 的 Redis 缓存 `rm()` 在 5.3.7 和 6.0.2 上抛出同样的异常，所以这是既有问题，不是升级引入的。已同步修正变体 README 和 Dockerfile 注释。
+- 勘误：根目录总结类文档中"CVE 已修复 / 验证通过"的说法以 `UNVERIFIED` 为准；补充 `v20261022` 镜像的实测组件版本。相关文档顶部已加勘误提示。
+- 修复 3 个失效的本地链接，`tools/check_docs.py` 已全部通过。
+
 ## 2026-10-22 — 生产升级实施记录
 
 - 新增 [docs/12](docs/12-生产升级实施经验-20261022.md)：CentOS 7 宿主机（Remi）和容器主机升级的过程、问题与验证方法。
 - 记录事实：Remi EL7 `7.2.34-22`（2024-06）**不含** CVE-2026-109618/109619 的回移；Sury 7.2.34-66、7.4.33-31 的 changelog 列出了这两项，补丁状态仍为 `UNVERIFIED`。
 - 新增变体 `variants/php72-fpm-bitnami-compat`（FPM-only，phpredis 5.3.7，对齐 bitnami-full 的行为）和 `variants/php74-apache-webdevops-compat`（兼容 webdevops 目录结构的 Apache + PHP 7.4）。
 - 新增 `tools/fcgi_compare.py` 及其测试：对新旧 FPM 发送相同的只读请求，逐项比较结果。
-- 已知问题：`v20261022` 自带 phpredis 6.0.2，ThinkPHP 5.0 的 Redis 缓存和 Session 驱动依赖已被删除的 `Redis::delete()`。
+- ~~已知问题：`v20261022` 自带 phpredis 6.0.2，ThinkPHP 5.0 的 Redis 缓存和 Session 驱动依赖已被删除的 `Redis::delete()`。~~ 该说法有误，已在 2026-10-23 更正（见上）。
 
 ## 2026-10-22 — 初始公开方案
 
