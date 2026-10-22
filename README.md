@@ -61,6 +61,8 @@ python3 tools/check_docs.py
 - [快速参考卡片](QUICK_REFERENCE.md) - 5 分钟上手指南
 - [本机修复实施经验](docs/10-native-repair-实施经验.md)
 - [容器构建实施经验](docs/11-container-build-实施经验.md)
+- [2026-10-22 生产升级实施经验](docs/12-生产升级实施经验-20261022.md)：Remi EL7 构建的 2026 补丁缺口，FPM 用户、扩展、ini 的对齐方法，网关的容器名解析缓存
+- 变体镜像：[php72-fpm-bitnami-compat](variants/php72-fpm-bitnami-compat/README.md) · [php74-apache-webdevops-compat](variants/php74-apache-webdevops-compat/README.md)；新旧 FPM 并行对比工具 `tools/fcgi_compare.py`
 
 ### 模板与示例
 - [安全证据模板](examples/security-evidence.example.json)

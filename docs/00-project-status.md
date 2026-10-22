@@ -31,3 +31,13 @@
 7. 获得授权并已部署。
 
 上一步成功不自动推出下一步。没有源码、测试账号或环境时，写明阻塞，不用模拟页面冒充业务验收。
+
+## 2026-10-22 实施记录
+
+按上面的 7 步拆分，详见 [12 章](12-生产升级实施经验-20261022.md)：
+
+| 对象 | 1 来源 | 2 CVE 证据 | 3 构建 | 4 FPM 路径 | 5 业务回归 | 6 压测/回滚 | 7 部署 |
+|---|---|---|---|---|---|---|---|
+| CentOS 7 宿主机（Remi 7.2.34-22） | 已验证 | **不含 2026-10 补丁** | 供应商 RPM | 已验证 | 部分 | 未完成 | 测试 2 台、生产 2 台 |
+| [php72-fpm-bitnami-compat](../variants/php72-fpm-bitnami-compat/README.md) | 已验证 | `UNVERIFIED`（仅 changelog） | 已完成 | 已验证 | 部分 | 未完成 | 生产容器主机 |
+| [php74-apache-webdevops-compat](../variants/php74-apache-webdevops-compat/README.md) | 已验证 | `UNVERIFIED`（仅 changelog） | 已完成 | 已验证 | 部分 | 未完成 | 生产容器主机 |
