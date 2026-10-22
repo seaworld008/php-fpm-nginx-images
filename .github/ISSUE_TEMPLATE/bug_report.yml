@@ -1,0 +1,26 @@
+name: 问题或兼容性报告
+description: 仅提交脱敏的非敏感问题；漏洞细节遵循 SECURITY.md。
+title: "[问题] "
+body:
+  - type: markdown
+    attributes:
+      value: "不要粘贴密码、生产地址、完整 phpinfo/inspect、环境变量或未公开漏洞利用细节。"
+  - type: textarea
+    id: environment
+    attributes:
+      label: 系统与版本
+      description: OS、架构、PHP 完整供应商版本、FPM、Nginx；不含主机名/IP。
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 预期与实际结果
+      description: 说明容器/本机路线、复现步骤、脱敏错误；不要附攻击载荷。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 来源与测试范围
+      description: 官方公告、测试命令、通过/失败/未测试与业务影响。

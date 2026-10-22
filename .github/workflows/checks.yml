@@ -1,0 +1,19 @@
+name: Documentation and tooling checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Unit tests (not PHP vulnerability validation)
+        run: python3 -m unittest discover -s tests -v
+      - name: Local documentation and JSON checks
+        run: python3 tools/check_docs.py

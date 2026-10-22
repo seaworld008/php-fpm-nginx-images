@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "document_kind": "EXAMPLE_NOT_RELEASE_EVIDENCE",
+  "checked_at": null,
+  "target": {
+    "kind": null,
+    "os": null,
+    "architecture": null,
+    "sapi": []
+  },
+  "artifact": {
+    "name": null,
+    "sha256": null,
+    "image_manifest_digest": null,
+    "build_commit": null
+  },
+  "php": {
+    "upstream_version": "7.2.34",
+    "vendor": null,
+    "package_version": null,
+    "source_version": null,
+    "source_sha256": null,
+    "patches": [],
+    "signature_evidence": []
+  },
+  "nginx": {
+    "upstream_version": null,
+    "package_version": null,
+    "source": null,
+    "sha256": null
+  },
+  "cves": {
+    "CVE-2026-109618": {
+      "status": "UNVERIFIED",
+      "advisory": "https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w",
+      "vendor_statement": null,
+      "coverage_limitations": [],
+      "evidence": [],
+      "regression_result": "NOT_TESTED"
+    },
+    "CVE-2026-109619": {
+      "status": "UNVERIFIED",
+      "advisory": "https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp",
+      "vendor_statement": null,
+      "coverage_limitations": [],
+      "evidence": [],
+      "regression_result": "NOT_TESTED"
+    }
+  },
+  "validation": {
+    "build": "NOT_TESTED",
+    "cli": "NOT_TESTED",
+    "fpm": "NOT_TESTED",
+    "extensions": "NOT_TESTED",
+    "business": "NOT_TESTED",
+    "performance": "NOT_TESTED",
+    "rollback": "NOT_TESTED"
+  },
+  "residual_risks": [
+    "PHP 7.2 is end-of-life; backports do not restore upstream support."
+  ],
+  "production_approved": false
+}
