@@ -164,8 +164,39 @@ php-fpm-nginx-images/
 - ✅ 容器自动化测试套件通过
 - ✅ 本机二进制验证脚本提供
 - ✅ 实施经验文档完整记录
+- ✅ **生产镜像已发布**: `114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022`
 
 查看详细构建过程：[容器构建实施经验](docs/11-container-build-实施经验.md) | [本机修复实施经验](docs/10-native-repair-实施经验.md)
+
+### 生产镜像信息
+
+```yaml
+镜像地址: 114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
+构建日期: 2026-10-22
+基础镜像: debian:12-slim (Bookworm)
+PHP 版本: 7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4
+Nginx 版本: 1.26.2
+扩展数量: 43 个 (含 Swoole 4.8.13)
+镜像大小: 465MB
+架构: linux/amd64
+```
+
+**使用镜像**：
+
+```bash
+# 拉取镜像
+docker pull 114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
+
+# 运行测试
+docker run -d -p 8080:80 \
+  --name php72-test \
+  114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
+
+# 验证
+curl http://localhost:8080/fpm_ping  # 健康检查
+docker exec php72-test php -v        # PHP 版本
+docker exec php72-test nginx -v      # Nginx 版本
+```
 
 未来发布必须附带完整供应商版本、制品哈希、逐 CVE 证据、测试范围和剩余风险；不能仅提供 `latest` 标签或“已安全”口号。
 
