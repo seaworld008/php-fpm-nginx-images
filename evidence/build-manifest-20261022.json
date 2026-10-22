@@ -1,0 +1,44 @@
+{
+  "image": {
+    "name": "jwxt-nginx-php72:v100.20261022",
+    "id": "sha256:10283e041388c25583c9d193bf68eba18eebe6fe37db4c34c93693f7c82d76b2",
+    "size": "465MB",
+    "buildDate": "2026-10-22T08:00:22Z"
+  },
+  "base": {
+    "os": "Debian",
+    "version": "12.15"
+  },
+  "components": {
+    "php": {
+      "version": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4",
+      "packageVersion": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4",
+      "sapi": ["cli", "fpm"],
+      "extensions": ",,Core,PDO,Phar,Reflection,SPL,SimpleXML,Zend OPcache,Zend OPcache,bcmath,bz2,calendar,cgi-fcgi,ctype,curl,date,dom,exif,fileinfo,filter,ftp,gd,gettext,gmp,hash,iconv,igbinary,imagick,imap,intl,json,libxml,mbstring,memcached,mongodb,msgpack,mysqli,mysqlnd,openssl,pcre,pdo_mysql,pdo_pgsql,pdo_sqlite,pgsql,posix,readline,redis,session,shmop,sockets,sodium,sqlite3,standard,swoole,sysvmsg,sysvsem,sysvshm,tokenizer,wddx,xml,xmlreader,xmlwriter,xsl,zip,zlib"
+    },
+    "nginx": {
+      "version": "1.30.6"
+    },
+    "swoole": {
+      "version": "4.8.13"
+    }
+  },
+  "security": {
+    "cvePatches": [
+      {
+        "id": "CVE-2026-109618",
+        "status": "patched",
+        "packageVersion": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4"
+      },
+      {
+        "id": "CVE-2026-109619",
+        "status": "patched",
+        "packageVersion": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4"
+      }
+    ]
+  },
+  "compatibility": {
+    "thinkphp": "5.x",
+    "phpVersion": "7.2.34"
+  }
+}

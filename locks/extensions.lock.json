@@ -1,0 +1,98 @@
+{
+  "extensions": {
+    "core_bundled": [
+      "Core", "date", "filter", "hash", "json", "libxml", "mbstring",
+      "openssl", "pcre", "PDO", "Phar", "Reflection", "session",
+      "SimpleXML", "SPL", "standard", "tokenizer", "xml", "zlib"
+    ],
+    "debian_packages": {
+      "bcmath": {"package": "php7.2-bcmath", "type": "core"},
+      "bz2": {"package": "php7.2-bz2", "type": "core"},
+      "calendar": {"package": "php7.2-common", "type": "core"},
+      "ctype": {"package": "php7.2-common", "type": "core"},
+      "curl": {"package": "php7.2-curl", "type": "core"},
+      "dom": {"package": "php7.2-xml", "type": "core"},
+      "exif": {"package": "php7.2-common", "type": "core"},
+      "fileinfo": {"package": "php7.2-common", "type": "core"},
+      "ftp": {"package": "php7.2-common", "type": "core"},
+      "gd": {"package": "php7.2-gd", "type": "core"},
+      "gettext": {"package": "php7.2-common", "type": "core"},
+      "gmp": {"package": "php7.2-gmp", "type": "core"},
+      "iconv": {"package": "php7.2-common", "type": "core"},
+      "imap": {"package": "php7.2-imap", "type": "core"},
+      "intl": {"package": "php7.2-intl", "type": "core"},
+      "mysqli": {"package": "php7.2-mysql", "type": "core"},
+      "mysqlnd": {"package": "php7.2-mysql", "type": "core"},
+      "opcache": {"package": "php7.2-opcache", "type": "zend"},
+      "pcntl": {"package": "php7.2-common", "type": "core"},
+      "pdo_mysql": {"package": "php7.2-mysql", "type": "core"},
+      "pdo_pgsql": {"package": "php7.2-pgsql", "type": "core"},
+      "pdo_sqlite": {"package": "php7.2-sqlite3", "type": "core"},
+      "pgsql": {"package": "php7.2-pgsql", "type": "core"},
+      "posix": {"package": "php7.2-common", "type": "core"},
+      "readline": {"package": "php7.2-readline", "type": "core"},
+      "shmop": {"package": "php7.2-common", "type": "core"},
+      "sockets": {"package": "php7.2-common", "type": "core"},
+      "sodium": {"package": "php7.2-common", "type": "core", "note": "Available in PHP 7.2"},
+      "sqlite3": {"package": "php7.2-sqlite3", "type": "core"},
+      "sysvmsg": {"package": "php7.2-sysvmsg", "type": "core"},
+      "sysvsem": {"package": "php7.2-sysvshm", "type": "core"},
+      "sysvshm": {"package": "php7.2-sysvshm", "type": "core"},
+      "wddx": {"package": "php7.2-xml", "type": "core", "note": "Deprecated, kept for compatibility"},
+      "xmlreader": {"package": "php7.2-xml", "type": "core"},
+      "xmlwriter": {"package": "php7.2-xml", "type": "core"},
+      "xsl": {"package": "php7.2-xml", "type": "core"},
+      "zip": {"package": "php7.2-zip", "type": "core"}
+    },
+    "pecl_extensions": {
+      "igbinary": {
+        "source": "PECL",
+        "compatible_version": "3.2.x",
+        "php72_support": true,
+        "install_before": ["redis", "memcached"],
+        "note": "Binary serializer, required before redis/memcached if used"
+      },
+      "redis": {
+        "source": "PECL or Debian package",
+        "package": "php7.2-redis",
+        "compatible_version": "5.3.x",
+        "php72_support": true,
+        "depends_on": ["igbinary (optional)"]
+      },
+      "memcached": {
+        "source": "PECL or Debian package",
+        "package": "php7.2-memcached",
+        "compatible_version": "3.1.x or 3.2.x",
+        "php72_support": true,
+        "depends_on": ["igbinary (optional)"]
+      },
+      "imagick": {
+        "source": "PECL or Debian package",
+        "package": "php7.2-imagick",
+        "compatible_version": "3.7.x",
+        "php72_support": true,
+        "note": "ImageMagick PHP binding"
+      },
+      "mongodb": {
+        "source": "PECL",
+        "compatible_version": "1.9.x or 1.10.x",
+        "php72_support": true,
+        "max_version": "1.19.x",
+        "note": "Check pecl.php.net/mongodb for PHP 7.2 compatible version"
+      },
+      "swoole": {
+        "source": "PECL",
+        "compatible_version": "4.8.x",
+        "php72_support": true,
+        "max_version": "4.8.13",
+        "note": "Swoole 5.x requires PHP 8.0+, use 4.8.x for PHP 7.2"
+      }
+    },
+    "configuration_notes": {
+      "load_order": "igbinary must be loaded before redis/memcached if serializer support is needed",
+      "mongodb_warning": "Check for 'already loaded' warnings in php.ini configuration",
+      "swoole_note": "Used for CLI worker processes, not for FPM",
+      "sodium_note": "Sodium is included in PHP 7.2+ core, no PECL install needed"
+    }
+  }
+}
