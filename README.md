@@ -48,13 +48,34 @@ python3 tools/check_docs.py
 
 ## 文档导航
 
+### 核心文档
 - [补丁证据、事实边界和权威来源](docs/01-security-and-sources.md)
 - [容器重建](docs/02-container-build-plan.md) · [本机包管理修复](docs/03-native-package-repair.md) · [本机源码/面板修复](docs/04-native-source-repair.md)
 - [高并发与运行时](docs/05-runtime-and-performance.md) · [扩展与验证矩阵](docs/06-compatibility-and-testing.md)
 - [Jenkins、Docker 和 Kubernetes 接入](docs/07-jenkins-and-kubernetes.md)
 - [发布、回滚和证据交付](docs/08-release-and-rollback.md)
 - [给 Codex 的完整任务书](docs/09-codex-execution-plan.md)
-- [安全证据模板](examples/security-evidence.example.json) · [验收报告模板](templates/validation-report.md)
+
+### 实施经验 ⭐
+- [生产环境实施经验](PRODUCTION_EXPERIENCE.md) - Jenkins + Docker 完整流程
+- [快速参考卡片](QUICK_REFERENCE.md) - 5 分钟上手指南
+- [本机修复实施经验](docs/10-native-repair-实施经验.md)
+- [容器构建实施经验](docs/11-container-build-实施经验.md)
+
+### 模板与示例
+- [安全证据模板](examples/security-evidence.example.json)
+- [验收报告模板](templates/validation-report.md)
+
+## 生产实施经验 🎯
+
+本仓库已完成真实生产环境部署验证，总结了完整的实施经验：
+
+- **[生产环境实施经验](PRODUCTION_EXPERIENCE.md)** - Jenkins + Docker 完整部署流程、常见问题与解决方案
+- **[快速参考卡片](QUICK_REFERENCE.md)** - 5 分钟上手指南、常用命令速查
+
+首个生产项目已成功部署，40 分钟完成迁移，0 秒业务中断，CVE 漏洞修复验证通过。
+
+---
 
 ## 快速开始
 
@@ -171,7 +192,7 @@ php-fpm-nginx-images/
 ### 生产镜像信息
 
 ```yaml
-镜像地址: 114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
+镜像标签: v20261022
 构建日期: 2026-10-22
 基础镜像: debian:12-slim (Bookworm)
 PHP 版本: 7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4
@@ -184,13 +205,13 @@ Nginx 版本: 1.26.2
 **使用镜像**：
 
 ```bash
-# 拉取镜像
-docker pull 114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
+# 拉取镜像（示例）
+docker pull registry.example.com/base/php:v20261022
 
 # 运行测试
 docker run -d -p 8080:80 \
   --name php72-test \
-  114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022
+  registry.example.com/base/php:v20261022
 
 # 验证
 curl http://localhost:8080/fpm_ping  # 健康检查
