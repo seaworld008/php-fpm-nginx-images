@@ -1,0 +1,86 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+*.git
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+*.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# IDE and editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts and caches
+node_modules/
+vendor/
+*.log
+*.pid
+*.sock
+*.tmp
+
+# Sensitive files - NEVER include these
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.*
+config/database.php
+config/config.php
+application/database.php
+application/config.php
+secrets/
+credentials/
+*.secret
+
+# Backup and temporary files
+*.bak
+*.backup
+*.old
+*-backup
+*~
+.*.swp
+
+# Uploads and user data
+uploads/
+storage/
+cache/
+logs/
+temp/
+tmp/
+
+# Test and development
+tests/
+test/
+*.test
+*_test.go
+.phpunit.*
+phpunit.xml
+
+# Docker
+Dockerfile.bak
+docker-compose*.yml
+.dockerignore
+
+# Archives
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z

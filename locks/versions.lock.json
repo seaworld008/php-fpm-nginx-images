@@ -1,0 +1,76 @@
+{
+  "build_metadata": {
+    "build_date_utc": "2026-10-22T15:02:33Z",
+    "build_machine": "local-build-host",
+    "builder": "Docker BuildKit",
+    "purpose": "PHP 7.2.34 security patched base image with CVE-2026-109618 and CVE-2026-109619 fixes"
+  },
+  "base_image": {
+    "reference": "debian:bookworm-slim",
+    "manifest_digest": "sha256:7ff6ba31527b9e336162fa061746c366c4b2032f4d2cff2078bea43f78efe3f8",
+    "architecture": "amd64",
+    "os": "linux",
+    "debian_version": "12 (bookworm)"
+  },
+  "php": {
+    "upstream_version": "7.2.34",
+    "vendor": "Sury (packages.sury.org)",
+    "full_package_version": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4",
+    "package_date": "2026-10-21",
+    "source_commit": "e0bcd488d9f8da024d9e1a254113539a846cac6d",
+    "thread_safety": "NTS",
+    "zend_engine": "3.2.0",
+    "packages": {
+      "php7.2-cli": {
+        "version": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4",
+        "sha256": "c064aa457d551b609b95749c6d0e093fd5c4425936278a7eddb2a128ab324ecb"
+      },
+      "php7.2-fpm": {
+        "version": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4",
+        "sha256": "52685e6e06c5c2dbda187e9ff5aaed1fddeab5e39728fde7d2e68d36628e6d08"
+      },
+      "php7.2-common": {
+        "version": "7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4",
+        "sha256": "5f4d04b16d89790ba60b4dcd727ecce123865147c8859ca21bf244af205fa303"
+      }
+    },
+    "cves": {
+      "CVE-2026-109618": {
+        "status": "VENDOR_FIXED_VERIFIED",
+        "description": "OOM corruption / state corruption via bailout",
+        "advisory": "https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w",
+        "fix_version": "7.2.34-66",
+        "backport_source": "PHP 8.2.35",
+        "changelog_entry": "Backported from 8.2.35: [CVE-2026-109618, CVE-2026-109619]: Avoid state corruption via bailout",
+        "vendor_maintainer": "Ondřej Surý <ondrej@debian.org>",
+        "verification_date": "2026-10-22",
+        "notes": "Minimal backport from upstream PHP 8.2.35, verified via changelog and package inspection"
+      },
+      "CVE-2026-109619": {
+        "status": "VENDOR_FIXED_VERIFIED",
+        "description": "Stale global state / state corruption via bailout",
+        "advisory": "https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp",
+        "fix_version": "7.2.34-66",
+        "backport_source": "PHP 8.2.35",
+        "changelog_entry": "Backported from 8.2.35: [CVE-2026-109618, CVE-2026-109619]: Avoid state corruption via bailout",
+        "vendor_maintainer": "Ondřej Surý <ondrej@debian.org>",
+        "verification_date": "2026-10-22",
+        "notes": "Minimal backport from upstream PHP 8.2.35, verified via changelog and package inspection"
+      }
+    }
+  },
+  "nginx": {
+    "upstream_version": "1.30.6",
+    "source": "nginx.org official stable",
+    "release_date": "2026-10-14",
+    "download_url": "https://nginx.org/packages/debian/",
+    "changelog_url": "https://nginx.org/en/CHANGES-1.30",
+    "security_advisories_url": "https://nginx.org/en/security_advisories.html"
+  },
+  "composer": {
+    "version": "2.8.4",
+    "php_requirement": ">=7.2.5",
+    "download_url": "https://getcomposer.org/download/2.8.4/composer.phar",
+    "sha256": "TBD - to be filled during build"
+  }
+}

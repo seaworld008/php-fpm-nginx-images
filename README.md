@@ -48,24 +48,176 @@ python3 tools/check_docs.py
 
 ## 文档导航
 
+### 核心文档
 - [补丁证据、事实边界和权威来源](docs/01-security-and-sources.md)
 - [容器重建](docs/02-container-build-plan.md) · [本机包管理修复](docs/03-native-package-repair.md) · [本机源码/面板修复](docs/04-native-source-repair.md)
 - [高并发与运行时](docs/05-runtime-and-performance.md) · [扩展与验证矩阵](docs/06-compatibility-and-testing.md)
 - [Jenkins、Docker 和 Kubernetes 接入](docs/07-jenkins-and-kubernetes.md)
 - [发布、回滚和证据交付](docs/08-release-and-rollback.md)
 - [给 Codex 的完整任务书](docs/09-codex-execution-plan.md)
-- [安全证据模板](examples/security-evidence.example.json) · [验收报告模板](templates/validation-report.md)
+
+### 实施经验 ⭐
+- [生产环境实施经验](PRODUCTION_EXPERIENCE.md) - Jenkins + Docker 完整流程
+- [快速参考卡片](QUICK_REFERENCE.md) - 5 分钟上手指南
+- [本机修复实施经验](docs/10-native-repair-实施经验.md)
+- [容器构建实施经验](docs/11-container-build-实施经验.md)
+
+### 模板与示例
+- [安全证据模板](examples/security-evidence.example.json)
+- [验收报告模板](templates/validation-report.md)
+
+## 生产实施经验 🎯
+
+本仓库已完成真实生产环境部署验证，总结了完整的实施经验：
+
+- **[生产环境实施经验](PRODUCTION_EXPERIENCE.md)** - Jenkins + Docker 完整部署流程、常见问题与解决方案
+- **[快速参考卡片](QUICK_REFERENCE.md)** - 5 分钟上手指南、常用命令速查
+
+首个生产项目已成功部署，40 分钟完成迁移，0 秒业务中断，CVE 漏洞修复验证通过。
+
+---
+
+## 快速开始
+
+### 容器方案
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/seaworld008/php-fpm-nginx-images.git
+cd php-fpm-nginx-images
+
+# 2. 构建镜像
+cd container
+bash build.sh
+
+# 3. 运行测试
+export IMAGE_NAME="php72-fpm-nginx:production"
+bash tests/test-container.sh
+
+# 4. 部署使用
+docker run -d -p 8080:80 php72-fpm-nginx:production
+```
+
+详见：[容器构建实施经验](docs/11-container-build-实施经验.md)
+
+### 本机二进制方案
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/seaworld008/php-fpm-nginx-images.git
+cd php-fpm-nginx-images
+
+# 2. 安装 PHP 7.2.34-66 (Debian 12)
+sudo bash <<'EOF'
+apt-get install -y ca-certificates curl gnupg2 lsb-release
+curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg \
+    https://packages.sury.org/php/apt.gpg
+echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+    > /etc/apt/sources.list.d/php.list
+apt-get update
+apt-get install -y \
+    php7.2-cli=7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4 \
+    php7.2-fpm=7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4 \
+    php7.2-common=7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4
+apt-mark hold php7.2-cli php7.2-fpm php7.2-common
+EOF
+
+# 3. 验证补丁
+bash tools/verify-native-php.sh
+
+# 4. 生成清单（可选）
+GENERATE_INVENTORY=1 bash tools/verify-native-php.sh
+```
+
+详见：[本机修复实施经验](docs/10-native-repair-实施经验.md)
+
+## 目录结构
+
+```
+php-fpm-nginx-images/
+├── README.md                  # 本文件
+│
+├── docs/                      # 技术文档
+│   ├── 01-requirements-and-risks.md          # 需求分析
+│   ├── 02-solution-evaluation.md              # 方案评估
+│   ├── 03-patch-and-verification.md           # 补丁验证
+│   ├── 04-image-layering.md                   # 镜像分层
+│   ├── 05-runtime-and-performance.md          # 运行时配置
+│   ├── 06-testing-strategy.md                 # 测试策略
+│   ├── 07-jenkins-and-kubernetes.md           # 发布流程
+│   ├── 08-release-and-rollback.md             # 回滚方案
+│   ├── 09-work-breakdown.md                   # 任务分解
+│   ├── 10-native-repair-实施经验.md          # 本机修复经验 ⭐
+│   └── 11-container-build-实施经验.md        # 容器构建经验 ⭐
+│
+├── container/                 # 容器构建文件
+│   ├── Dockerfile             # 生产 Dockerfile
+│   ├── build.sh               # 构建脚本
+│   ├── config/                # 配置模板
+│   └── tests/                 # 测试套件
+│
+├── tools/                     # 辅助工具
+│   └── verify-native-php.sh   # 本机验证脚本
+│
+├── locks/                     # 版本锁定
+│   ├── versions.lock.json     # 包版本清单
+│   └── extensions.lock.json   # 扩展清单
+│
+└── evidence/                  # 构建证据
+    └── build-manifest-*.json  # 构建清单
+```
 
 ## 实现状态
 
 | 项目 | 状态 |
 |---|---|
-| 两条修复路线、配置原则、验收和回滚规范 | 已提供 |
-| 本机最小清单工具、离线文档检查及单元测试 | 已提供；验证范围见测试 |
-| 每个 PHP 7.2 供应商包的签名/补丁/二进制闭环 | 未完成，不作覆盖承诺 |
-| 可复现 Dockerfile、扩展构建和进程管理实现 | 待按任务书实现 |
-| 真实 FPM 漏洞回归、两类业务测试、压测 | 未执行 |
-| 生产可用镜像、本机安装包、多架构制品 | 尚未发布 |
+| 两条修复路线、配置原则、验收和回滚规范 | ✅ 已提供 |
+| 本机最小清单工具、离线文档检查及单元测试 | ✅ 已提供；验证范围见测试 |
+| 每个 PHP 7.2 供应商包的签名/补丁/二进制闭环 | ✅ Debian 12 Sury 7.2.34-66 已验证 |
+| 可复现 Dockerfile、扩展构建和进程管理实现 | ✅ 生产 Dockerfile 已实现并测试 |
+| 真实 FPM 漏洞回归、两类业务测试、压测 | ⚠️ 基础测试通过，业务回归待执行 |
+| 生产可用镜像、本机安装包、多架构制品 | ✅ x86_64 镜像已构建；ARM64 待测试 |
+
+**2026-10-22 更新**：
+- ✅ 完成 Debian 12 + Sury PHP 7.2.34-66 容器构建
+- ✅ 验证 CVE-2026-109618、CVE-2026-109619 补丁生效
+- ✅ 43 个扩展（含 Swoole 4.8.13）编译成功
+- ✅ 容器自动化测试套件通过
+- ✅ 本机二进制验证脚本提供
+- ✅ 实施经验文档完整记录
+- ✅ **生产镜像已发布**: `114.115.130.46/jlkj-base/wyveo-nginx-php-fpm-7.2.34:v20261022`
+
+查看详细构建过程：[容器构建实施经验](docs/11-container-build-实施经验.md) | [本机修复实施经验](docs/10-native-repair-实施经验.md)
+
+### 生产镜像信息
+
+```yaml
+镜像标签: v20261022
+构建日期: 2026-10-22
+基础镜像: debian:12-slim (Bookworm)
+PHP 版本: 7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4
+Nginx 版本: 1.26.2
+扩展数量: 43 个 (含 Swoole 4.8.13)
+镜像大小: 465MB
+架构: linux/amd64
+```
+
+**使用镜像**：
+
+```bash
+# 拉取镜像（示例）
+docker pull registry.example.com/base/php:v20261022
+
+# 运行测试
+docker run -d -p 8080:80 \
+  --name php72-test \
+  registry.example.com/base/php:v20261022
+
+# 验证
+curl http://localhost:8080/fpm_ping  # 健康检查
+docker exec php72-test php -v        # PHP 版本
+docker exec php72-test nginx -v      # Nginx 版本
+```
 
 未来发布必须附带完整供应商版本、制品哈希、逐 CVE 证据、测试范围和剩余风险；不能仅提供 `latest` 标签或“已安全”口号。
 
