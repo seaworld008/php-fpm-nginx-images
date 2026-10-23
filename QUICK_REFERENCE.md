@@ -1,5 +1,7 @@
 # 快速参考卡片
 
+> **勘误（2026-10-23）**：本文中 CVE-2026-109618/109619 “已修复 / 验证通过 / 补丁生效”等说法证据不足，补丁状态以 `UNVERIFIED` 为准；组件版本以实测为准（nginx 1.30.6、phpredis 6.0.2、mongodb 1.16.2）。见 [README 勘误](README.md#勘误2026-10-23) 和 [docs/12 §12.9](docs/12-生产升级实施经验-20261022.md#129-勘误)。
+
 ## 🎯 核心信息
 
 ### 镜像信息
@@ -135,7 +137,7 @@ your_project_name)
 - **完整指南**: [PRODUCTION_EXPERIENCE.md](./PRODUCTION_EXPERIENCE.md)
 - **迁移指南**: [HOW_TO_MIGRATE_JENKINS_PROJECTS.md](./HOW_TO_MIGRATE_JENKINS_PROJECTS.md)
 - **脚本模板**: [jenkins-deploy-template.sh](./jenkins-deploy-template.sh)
-- **架构文档**: [CLAUDE.md](./CLAUDE.md)
+- **项目状态**: [docs/00-project-status.md](./docs/00-project-status.md)
 
 ---
 

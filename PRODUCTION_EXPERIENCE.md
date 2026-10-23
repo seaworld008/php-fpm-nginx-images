@@ -1,5 +1,7 @@
 # 生产环境实战经验总结
 
+> **勘误（2026-10-23）**：本文中 CVE-2026-109618/109619 “已修复 / 验证通过 / 补丁生效”等说法证据不足，补丁状态以 `UNVERIFIED` 为准；组件版本以实测为准（nginx 1.30.6、phpredis 6.0.2、mongodb 1.16.2）。见 [README 勘误](README.md#勘误2026-10-23) 和 [docs/12 §12.9](docs/12-生产升级实施经验-20261022.md#129-勘误)。
+
 ## 📋 文档概述
 
 本文档记录了 PHP 7.2.34-66 安全镜像在生产环境部署的实战经验，包括遇到的问题、解决方案和最佳实践。
@@ -525,10 +527,10 @@ deploy:
 
 ## 📚 参考文档
 
-- [CLAUDE.md](./CLAUDE.md) - 项目架构和开发指南
+- [AGENTS.md](./AGENTS.md) - 仓库协作与证据规则
 - [HOW_TO_MIGRATE_JENKINS_PROJECTS.md](./HOW_TO_MIGRATE_JENKINS_PROJECTS.md) - Jenkins 项目迁移详细指南
 - [jenkins-deploy-template.sh](./jenkins-deploy-template.sh) - 完整的发布脚本模板
-- [FINAL_DELIVERY_REPORT.md](./FINAL_DELIVERY_REPORT.md) - 最终交付报告
+- [docs/12](./docs/12-生产升级实施经验-20261022.md) - 2026-10-22 生产升级实施经验与复查
 
 ---
 

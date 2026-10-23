@@ -13,7 +13,7 @@
 | 运行方式 | 入口脚本 + `php-fpm -F`，以 root 运行 master | `php-fpm7.2 -F`，`ENTRYPOINT []`，`HEALTHCHECK NONE` |
 | 监听 / 用户 | `0.0.0.0:9000` / `application`(1000) | 相同（见 `www-jlkj.conf`） |
 | 运行时 ini | `zz-jlkj-runtime.ini` | 相同，另加 `zz-jlkj-parity.ini` 对齐 Debian/Sury 默认值的差异 |
-| redis 扩展 | 5.3.5 | **5.3.7**（源码编译）。Sury 只提供 6.x，而 6.x 删除了 `Redis::delete()`，ThinkPHP 5.0 的缓存和 Session 驱动依赖它 |
+| redis 扩展 | 5.3.5 | **5.3.7**（源码编译）。Sury 只提供 6.x；选 5.x 是为了与原镜像保持同一主版本、减少行为变化。`Redis::delete()` 在 5.x 和 6.x 中都存在且都已 deprecated，新旧镜像行为相同，见 [docs/12 §12.9](../../docs/12-生产升级实施经验-20261022.md#129-勘误) |
 | 扩展 | 69 个 | 70 个。去掉 ionCube、vips（已核查应用未使用）；新增 igbinary、msgpack、swoole、wddx |
 | 有意保留的差异 | `opcache.revalidate_freq=60`，`max_accelerated_files=4000` | 2 和 10000 |
 
