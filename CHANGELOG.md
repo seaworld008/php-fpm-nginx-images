@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-23 — 宿主机 nginx 升级与 PHP 容器化
+
+- 新增 [docs/13](docs/13-宿主机nginx升级与PHP容器化-20261023.md)：源码编译 nginx 的平滑升级（1.16.1 → 1.30.6，OpenSSL 3.5.9）；把宿主机 Remi PHP 迁到容器的设计、步骤、17 个踩过的坑、日常维护和回滚。
+- 新增变体 [`variants/php72-host-compat`](variants/php72-host-compat/README.md)：同一镜像跑 php-fpm 或 supervisord，按环境变量建立与宿主机 uid 相同的用户、关闭宿主机上没有的扩展；`kit/` 提供 `setup-runtime.sh`、`cutover.sh`、`/usr/bin/php` 转发脚本和运维说明。
+- 新增工具及测试：`tools/nginx_targets.py`、`tools/http_probe.sh`、`tools/probe_compare.py`、`tools/ini_parity.py`。`ini_parity.py` 对"只有新环境才有"的指令只给提示，不写入。
+
 ## 2026-10-23 — 复查、只读入侵排查与勘误
 
 - [docs/12](docs/12-生产升级实施经验-20261022.md) 新增 12.6～12.10：
