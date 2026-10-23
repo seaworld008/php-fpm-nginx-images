@@ -42,6 +42,6 @@
 | [php72-fpm-bitnami-compat](../variants/php72-fpm-bitnami-compat/README.md) | 已验证 | `UNVERIFIED`（仅 changelog） | 已完成 | 已验证 | 部分 | 未完成 | 生产容器主机 |
 | [php74-apache-webdevops-compat](../variants/php74-apache-webdevops-compat/README.md) | 已验证 | `UNVERIFIED`（仅 changelog） | 已完成 | 已验证 | 部分 | 未完成 | 生产容器主机、7.4 测试容器主机 |
 | Ubuntu 24.04 php8.3 `8.3.6-0ubuntu0.24.04.13`（容器主机的宿主机，FPM 未启用） | 已验证 | `UNVERIFIED`（仅 changelog） | 供应商 DEB | 不适用 | 不适用 | 未完成 | 生产容器主机 |
-| [php72-host-compat](../variants/php72-host-compat/README.md)（宿主机 PHP 迁移到容器） | 已验证 | `UNVERIFIED`（仅 changelog） | 已完成 | 已验证 | 部分 | 回滚包已备份 | 测试主机 2 台（2026-10-23） |
+| [php72-host-compat](../variants/php72-host-compat/README.md)（宿主机 PHP 迁移到容器） | 已验证 | `UNVERIFIED`（仅 changelog） | 已完成 | 已验证 | 部分 | 回滚包已备份 | 测试 2 台、生产 2 台（2026-10-23） |
 
 2026-10-23 复查：补齐了测试主机的 ini 和池配置，修复了 cron 脚本中的旧 PHP 路径，升级了宿主机自带的 php8.3，并完成只读入侵排查（未发现入侵迹象）。详见 [12.6～12.10](12-生产升级实施经验-20261022.md#126-复查发现的遗漏2026-10-23)。CentOS 7 宿主机这一行的 CVE 缺口仍未解决。

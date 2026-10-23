@@ -56,9 +56,49 @@ server {
 """
 
 
+# nginx started with "-p /application/nginx/ -c conf/nginx.conf": roots are relative to the prefix
+PREFIXED = """# configuration file /application/nginx/conf/nginx.conf:
+http {
+    include vhost/*.conf;
+}
+
+# configuration file /application/nginx/conf/vhost/app.conf:
+server {
+    listen 80;
+    server_name app.example.com 10.0.0.5;
+    location / {
+        root   html/app/public/;
+    }
+    location ~ \\.php(.*)$ {
+        root   html/app/public;
+        fastcgi_pass 127.0.0.1:9000;
+    }
+}
+"""
+
+
 class NginxTargetsTests(unittest.TestCase):
     def setUp(self):
         self.assertIsNotNone(nt, 'nginx_targets implementation is not present')
+
+    def test_relative_roots_are_resolved_against_prefix(self):
+        self.assertEqual(nt.fcgi_targets(PREFIXED), [])
+        self.assertEqual(nt.fcgi_targets(PREFIXED, prefix='/application/nginx/'),
+                         [('app.example.com', '/application/nginx/html/app/public', '/index.php')])
+        self.assertIn(('a.example.com', '/data/wwwroot/a/public', '/index.php'),
+                      nt.fcgi_targets(SAMPLE, prefix='/usr/local/nginx/'))
+
+    def test_cli_accepts_prefix(self):
+        import contextlib, io, os, tempfile
+        with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False) as fh:
+            fh.write(PREFIXED)
+        out = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(nt.main(['--fcgi', '--prefix', '/application/nginx', fh.name]), 0)
+        finally:
+            os.unlink(fh.name)
+        self.assertEqual(out.getvalue(), 'app.example.com\t/application/nginx/html/app/public\t/index.php\n')
 
     def test_probe_targets_inherit_ssl_per_port(self):
         got = set(nt.probe_targets(SAMPLE))

@@ -4,8 +4,12 @@
 # 网络用 host，代码和日志路径与宿主机一致。
 ARG BASE=114.115.130.46/jlkj-base/php-fpm:7.2.34-sury-20261021
 FROM ${BASE}
+# 与基础镜像的 PHP 包同一版本；dba、recode 是 P2 宿主机加载、基础镜像没有的扩展
+ARG PHP_PKG=7.2.34-66+0~20261021.122+debian12~1.gbpe0bcd4
 RUN set -eux; \
-    apt-get update; apt-get install -y --no-install-recommends tini; rm -rf /var/lib/apt/lists/*; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends tini php7.2-dba=${PHP_PKG} php7.2-recode=${PHP_PKG}; \
+    rm -rf /var/lib/apt/lists/*; \
     phpdismod -v 7.2 -s ALL zz-jlkj-runtime zz-jlkj-parity; \
     rm -f /etc/php/7.2/fpm/pool.d/*.conf /etc/php/7.2/fpm/conf.d/99-production.ini; \
     phpdismod -v 7.2 -s fpm readline; \

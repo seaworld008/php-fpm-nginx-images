@@ -9,7 +9,9 @@
          PHP-FPM (fastcgi_pass in the block, in a nested location, or in an included file), for
          tools/fcgi_compare.py --targets.
 
-Server blocks inside stream {} are ignored. Roots that are relative or contain variables are skipped.
+Server blocks inside stream {} are ignored. Roots that contain variables are skipped, and so are relative
+roots unless --prefix gives the prefix nginx runs with (`nginx -p`; containerized nginx also needs it for
+`nginx -T`, e.g. `nginx -p /application/nginx/ -c conf/nginx.conf -T`).
 """
 import argparse
 import os
@@ -89,13 +91,15 @@ def probe_targets(text):
     return seen
 
 
-def fcgi_targets(text):
+def fcgi_targets(text, prefix=None):
+    """prefix: nginx's -p prefix; relative roots are resolved against it, otherwise skipped."""
     php_files = {os.path.basename(name) for name, body in SECTION.findall(text)
                  if re.search(r'^\s*fastcgi_pass\s', body, re.M)}
     seen = []
     for d in server_blocks(text):
         uses_php = any(k == 'fastcgi_pass' or (k == 'include' and v and os.path.basename(v[0]) in php_files) for k, v in d)
-        roots = [v[0] for k, v in d if k == 'root' and v and v[0].startswith('/') and '$' not in v[0]]
+        roots = [v[0] if v[0].startswith('/') else os.path.join(prefix, v[0])
+                 for k, v in d if k == 'root' and v and '$' not in v[0] and (prefix or v[0].startswith('/'))]
         names = _names(d)
         if uses_php and roots and names:
             t = (names[0], roots[0].rstrip('/') or '/', '/index.php')
@@ -109,10 +113,11 @@ def main(argv=None):
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument('--probe', action='store_true', help='scheme/port/host targets for tools/http_probe.sh')
     mode.add_argument('--fcgi', action='store_true', help='host/root/script targets for tools/fcgi_compare.py')
+    ap.add_argument('--prefix', help='nginx -p prefix, for configs with relative roots (e.g. /application/nginx)')
     ap.add_argument('dump', help='file with `nginx -T` output, or - for stdin')
     args = ap.parse_args(argv)
     text = sys.stdin.read() if args.dump == '-' else open(args.dump, encoding='utf-8', errors='replace').read()
-    for t in (probe_targets(text) if args.probe else fcgi_targets(text)):
+    for t in (probe_targets(text) if args.probe else fcgi_targets(text, args.prefix)):
         print('\t'.join(t))
     return 0
 

@@ -15,8 +15,10 @@
   conf/zz-host-parity-*.ini    与原环境实际生效配置的差异补齐（tools/ini_parity.py 生成）
   /etc/php72-exec.conf         转发脚本认可的挂载路径（MOUNTS）
 常用操作
-  docker-compose ps / logs php72-fpm / restart php72-fpm
-  修改 php.ini 或池配置后：docker-compose restart php72-fpm php72-cli
+  cd /data/php72-runtime && @DC@ ps / logs php72-fpm / restart php72-fpm
+  修改 php.ini 或池配置后：@DC@ restart php72-fpm php72-cli
+  /tmp：php72-cli 与宿主机共用；php72-fpm 只有原来 PrivateTmp=no（例如会话存在 /tmp）时才共用
+  慢日志：池配置开了 request_slowlog_timeout 时，php72-fpm 带 cap_add SYS_PTRACE，否则慢日志里没有调用栈
 
 日常维护
   supervisor 任务（新增 / 修改 / 删除）：和以前一样
@@ -29,15 +31,15 @@
 注意（与以前不同的地方）
   1. supervisor 程序都在 PHP 容器里运行，只能是 PHP 程序（或者 sh、curl 这类容器里有的命令）。
   2. 程序和脚本的路径必须在挂载目录（见 /etc/php72-exec.conf 和 docker-compose.yml）下面。
-  3. 运行用户必须写在 docker-compose.yml 的 HOST_USERS 里，改完执行 docker-compose up -d php72-fpm php72-cli；
+  3. 运行用户必须写在 docker-compose.yml 的 HOST_USERS 里，改完执行 @DC@ up -d php72-fpm php72-cli；
      如果这个用户的 crontab 也要调用 php，还要在 /etc/sudoers.d/php72-exec 里加一行。
   4. 修改 supervisord 主配置 /etc/supervisord.conf 后，执行 docker restart php72-cli，所有队列会随之重启。
   5. crontab 里定义的环境变量不会传进容器。
   6. supervisorctl pid 显示的是容器内的进程号；要对应到宿主机进程，用 docker top php72-cli。
 
 回滚（恢复 Remi PHP，约 1 分钟）
-  cd /data/php72-runtime && docker-compose down
+  cd /data/php72-runtime && @DC@ down
   yum localinstall -y /root/php_container_backup/rpms/*.rpm
-  tar xzf /root/php_container_backup/host-php-config-backup.tgz -C /
+  tar xzf /root/php_container_backup/host-php-config-backup.tgz -C /     （其中包含 rc.local）
   rm -f /etc/sudoers.d/php72-exec /usr/local/bin/php72-exec /etc/php72-exec.conf
   systemctl enable --now php-fpm supervisord
