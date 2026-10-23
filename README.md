@@ -69,7 +69,9 @@ python3 tools/check_docs.py
 - [本机修复实施经验](docs/10-native-repair-实施经验.md)
 - [容器构建实施经验](docs/11-container-build-实施经验.md)
 - [2026-10-22 生产升级实施经验](docs/12-生产升级实施经验-20261022.md)：Remi EL7 构建的 2026 补丁缺口，FPM 用户、扩展、ini 的对齐方法，网关的容器名解析缓存；10-23 复查发现的遗漏、FPM 运行态探针、只读入侵排查清单与勘误
-- 变体镜像：[php72-fpm-bitnami-compat](variants/php72-fpm-bitnami-compat/README.md) · [php74-apache-webdevops-compat](variants/php74-apache-webdevops-compat/README.md)；新旧 FPM 并行对比工具 `tools/fcgi_compare.py`
+- [2026-10-23 宿主机 nginx 升级与 PHP 容器化](docs/13-宿主机nginx升级与PHP容器化-20261023.md)：源码编译 nginx 的平滑升级；把宿主机 Remi PHP 迁到容器，nginx、crontab、supervisor 和代码目录都不改；17 个踩过的坑
+- 变体镜像：[php72-fpm-bitnami-compat](variants/php72-fpm-bitnami-compat/README.md) · [php74-apache-webdevops-compat](variants/php74-apache-webdevops-compat/README.md) · [php72-host-compat](variants/php72-host-compat/README.md)（宿主机 PHP 迁移，含 `kit/`）
+- 工具：`tools/fcgi_compare.py`（新旧 FPM 并行对比）· `tools/nginx_targets.py`（从 `nginx -T` 生成探测目标）· `tools/http_probe.sh` + `tools/probe_compare.py`（变更前后全站对比）· `tools/ini_parity.py`（新旧 PHP 实际生效配置对比，生成补齐文件）
 
 ### 模板与示例
 - [安全证据模板](examples/security-evidence.example.json)

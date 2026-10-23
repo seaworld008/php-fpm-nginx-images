@@ -1,0 +1,24 @@
+#!/bin/bash
+# 在 php72-cli 容器里执行 PHP，保持调用者身份、当前目录、参数、标准输出和退出码。
+# root 直接调用；其他用户经 sudo 调用（/etc/sudoers.d/php72-exec），以 SUDO_UID/SUDO_GID 的身份执行。
+# 当前目录不在挂载路径（/etc/php72-exec.conf 中的 MOUNTS）下时改用 /。
+set -u
+MOUNTS="/data"
+CONTAINER=php72-cli
+[ -r /etc/php72-exec.conf ] && . /etc/php72-exec.conf
+U=${SUDO_UID:-$(id -u)}
+G=${SUDO_GID:-$(id -g)}
+W=/
+for m in $MOUNTS; do
+  case "$PWD/" in "${m%/}"/*) W=$PWD ;; esac
+done
+# 只在交互终端下接管标准输入：docker exec -i 会把调用方的输入全部读走（原生 php 不会），
+# 例如 while read ...; do php ...; done < 文件 会被破坏。需要用管道给 php 传数据时设置 PHP72_STDIN=1。
+I=""
+if [ -t 0 ]; then
+  I=-i
+  if [ -t 1 ]; then I=-it; fi
+elif [ "${PHP72_STDIN:-0}" = 1 ]; then
+  I=-i
+fi
+exec /usr/bin/docker exec $I -u "$U:$G" -w "$W" "$CONTAINER" php "$@"

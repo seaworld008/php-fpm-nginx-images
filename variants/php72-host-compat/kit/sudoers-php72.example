@@ -1,0 +1,4 @@
+# 允许这些用户的定时任务经 /usr/bin/php 在 php72-cli 容器里以自己的身份执行 PHP（只放行这一个脚本）。
+# 不写系统日志和 PAM 会话日志：每分钟数十次的定时任务会刷满 /var/log/secure。
+Defaults!/usr/local/bin/php72-exec !requiretty, !syslog, !pam_session, env_keep += "PHP72_STDIN"
+www ALL=(root) NOPASSWD: /usr/local/bin/php72-exec

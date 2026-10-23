@@ -1,0 +1,7 @@
+#!/bin/bash
+# 宿主机已不再安装 PHP：所有 php 调用转发到 php72-cli 容器（Sury 7.2.34-66），说明见 /data/php72-runtime/README.txt
+if [ "$(id -u)" = 0 ]; then
+  unset SUDO_UID SUDO_GID
+  exec /usr/local/bin/php72-exec "$@"
+fi
+exec /usr/bin/sudo -n /usr/local/bin/php72-exec "$@"

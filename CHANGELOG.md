@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-10-23 — 宿主机 nginx 升级与 PHP 容器化（v20261023.1）
+
+发布说明见 [RELEASE_NOTES_v20261023.1.md](RELEASE_NOTES_v20261023.1.md)。
+
+- 新增 [docs/13](docs/13-宿主机nginx升级与PHP容器化-20261023.md)：
+  - 源码编译 nginx 的平滑升级（1.16.1 → 1.30.6，OpenSSL 3.5.9）。
+  - 把宿主机 Remi PHP 迁到容器的设计、步骤、32 个踩过的坑（测试阶段 17 个，生产阶段 15 个）、日常维护和回滚。
+- 新增变体 [`variants/php72-host-compat`](variants/php72-host-compat/README.md)：同一镜像跑 php-fpm 或 supervisord，按环境变量建立与宿主机 uid 相同的用户、关闭宿主机上没有的扩展；`kit/` 提供 `setup-runtime.sh`、`cutover.sh`、`/usr/bin/php` 转发脚本和运维说明。
+- 新增工具及测试：`tools/nginx_targets.py`、`tools/http_probe.sh`、`tools/probe_compare.py`、`tools/ini_parity.py`。`ini_parity.py` 对"只有新环境才有"的指令只给提示，不写入。
+- 生产两台（P1、P2）完成迁移，过程与验证见 [docs/13 §13.8](docs/13-宿主机nginx升级与PHP容器化-20261023.md#138-生产实施记录)；新增踩坑记录 #18～#32。
+- `php72-host-compat` r2：
+  - 入口脚本先删除与宿主机账号同名或同 id 的镜像账号，再建立宿主机账号；重启容器时不再调用账号工具。
+  - 加装同一版本的 `php7.2-dba`、`php7.2-recode`。
+- `kit/` 改进：
+  - compose v1/v2 自动选择。
+  - 根据 `PrivateTmp` 和慢日志配置，自动挂载 /tmp、添加 `SYS_PTRACE`。
+  - 补齐文件以 0644 安装。
+  - 回滚用 RPM 从原仓库下载。
+  - 注释 rc.local 里启动 php-fpm 的行。
+  - 删除 Remi 的时机避开整分钟触发的定时任务。
+  - 用 `env -i` 验证转发脚本。
+- `tools/nginx_targets.py` 新增 `--prefix`，支持以 `nginx -p` 启动、root 为相对路径的配置。
+- docs/13 §13.6 补充 Jenkins 发布兼容性：发布脚本只做 rsync、`chown`、`nginx -t`，opcache 在 2 秒内自动生效。
+- docs/13 §13.8 补充实施中发现的既有问题及处理，原则是不改变业务数据和业务行为。处理的问题有：
+  - cron 输出邮件被退回。
+  - 失效的定时任务和 systemd 服务。
+  - 一个涉及资金的任务（只停用，不修复）。
+
 ## 2026-10-23 — 复查、只读入侵排查与勘误
 
 - [docs/12](docs/12-生产升级实施经验-20261022.md) 新增 12.6～12.10：
